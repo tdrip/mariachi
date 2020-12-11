@@ -13,7 +13,8 @@ import (
 //
 // Built from:
 // main - VTechsDatastore.Db
-/* CREATE TABLE products (
+/*
+ CREATE TABLE products (
     id          INTEGER      NOT NULL,
     description VARCHAR (50),
     img         VARCHAR (50),
@@ -25,6 +26,7 @@ import (
     )
 )
 */
+//
 
 // Table fields
 
@@ -69,7 +71,17 @@ func (handler *ProductsHandler) SetPersistantStorage(persistant per.IPersistantS
 // This function creates the database table for Product
 func (handler *ProductsHandler) CreateStructures() per.IQueryResult {
 	handler.Parent.LogDebug("CreateStructures", "Executing Query")
-	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS products ( id INTEGER NOT NULL, description VARCHAR (50),img VARCHAR (50),PRIMARY KEY (id), UNIQUE ( description ))")
+	return handler.Executor.ExecuteQuery(`CREATE TABLE IF NOT EXISTS products (
+    id          INTEGER      NOT NULL,
+    description VARCHAR (50),
+    img         VARCHAR (50),
+    PRIMARY KEY (
+        id
+    ),
+    UNIQUE (
+        description
+    )
+)`)
 }
 
 // End Istorage
@@ -113,11 +125,11 @@ func (handler *ProductsHandler) ReadAll() SQLL.SQLLiteQueryResult {
 
 func (handler *ProductsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 
-	var Id int64
+	var Id *int64
 
-	var Description string
+	var Description *string
 
-	var Img string
+	var Img *string
 
 	results := []per.IDataItem{} //Product{}
 
@@ -127,14 +139,26 @@ func (handler *ProductsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 
 		res := data.Product{}
 
-		res.Id = Id
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
+		if Id != nil {
+			res.Id = *Id
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
-		res.Description = Description
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Description", Description)
+		if Description != nil {
+			res.Description = *Description
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Description", Description)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
-		res.Img = Img
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Img", Img)
+		if Img != nil {
+			res.Img = *Img
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Img", Img)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
 		results = append(results, res)
 	}

@@ -13,7 +13,8 @@ import (
 //
 // Built from:
 // main - VTechsDatastore.Db
-/* CREATE TABLE configurations (
+/*
+ CREATE TABLE configurations (
     id       INTEGER       NOT NULL,
     user     VARCHAR (120),
     password VARCHAR (25),
@@ -23,6 +24,7 @@ import (
     )
 )
 */
+//
 
 // Table fields
 
@@ -70,7 +72,15 @@ func (handler *ConfigurationsHandler) SetPersistantStorage(persistant per.IPersi
 // This function creates the database table for Configuration
 func (handler *ConfigurationsHandler) CreateStructures() per.IQueryResult {
 	handler.Parent.LogDebug("CreateStructures", "Executing Query")
-	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS configurations ( id INTEGER NOT NULL, user VARCHAR (120),password VARCHAR (25), baseurl  VARCHAR (250), PRIMARY KEY (id))")
+	return handler.Executor.ExecuteQuery(`CREATE TABLE IF NOT EXISTS configurations (
+    id       INTEGER       NOT NULL,
+    user     VARCHAR (120),
+    password VARCHAR (25),
+    baseurl  VARCHAR (250),
+    PRIMARY KEY (
+        id
+    )
+)`)
 }
 
 // End Istorage
@@ -118,13 +128,13 @@ func (handler *ConfigurationsHandler) ReadAll() SQLL.SQLLiteQueryResult {
 
 func (handler *ConfigurationsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 
-	var Id int64
+	var Id *int64
 
-	var User string
+	var User *string
 
-	var Password string
+	var Password *string
 
-	var Baseurl string
+	var Baseurl *string
 
 	results := []per.IDataItem{} //Configuration{}
 
@@ -134,17 +144,33 @@ func (handler *ConfigurationsHandler) ParseRows(rows *sql.Rows) per.IQueryResult
 
 		res := data.Configuration{}
 
-		res.Id = Id
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
+		if Id != nil {
+			res.Id = *Id
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
-		res.User = User
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for User", User)
+		if User != nil {
+			res.User = *User
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for User", User)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
-		res.Password = Password
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Password", Password)
+		if Password != nil {
+			res.Password = *Password
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Password", Password)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
-		res.Baseurl = Baseurl
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Baseurl", Baseurl)
+		if Baseurl != nil {
+			res.Baseurl = *Baseurl
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Baseurl", Baseurl)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
 		results = append(results, res)
 	}

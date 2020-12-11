@@ -28,6 +28,7 @@ import (
     )
 )
 */
+//
 
 // Table fields
 
@@ -78,7 +79,19 @@ func (handler *TechnologiesHandler) SetPersistantStorage(persistant per.IPersist
 // This function creates the database table for Technologie
 func (handler *TechnologiesHandler) CreateStructures() per.IQueryResult {
 	handler.Parent.LogDebug("CreateStructures", "Executing Query")
-	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS technologies (id INTEGER NOT NULL, name VARCHAR (50) UNIQUE, type VARCHAR (25), icon VARCHAR (50), type_description VARCHAR (30), PRIMARY KEY ( id ), UNIQUE (name))")
+	return handler.Executor.ExecuteQuery(`CREATE TABLE IF NOT EXISTS technologies (
+    id               INTEGER      NOT NULL,
+    name             VARCHAR (50) UNIQUE,
+    type             VARCHAR (25),
+    icon             VARCHAR (50),
+    type_description VARCHAR (30),
+    PRIMARY KEY (
+        id
+    ),
+    UNIQUE (
+        name
+    )
+)`)
 }
 
 // End Istorage
@@ -130,15 +143,15 @@ func (handler *TechnologiesHandler) ReadAll() SQLL.SQLLiteQueryResult {
 
 func (handler *TechnologiesHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 
-	var Id int64
+	var Id *int64
 
-	var Name string
+	var Name *string
 
-	var Type string
+	var Type *string
 
-	var Icon string
+	var Icon *string
 
-	var Type_description string
+	var Type_description *string
 
 	results := []per.IDataItem{} //Technologie{}
 
@@ -148,20 +161,40 @@ func (handler *TechnologiesHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 
 		res := data.Technologie{}
 
-		res.Id = Id
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
+		if Id != nil {
+			res.Id = *Id
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
-		res.Name = Name
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Name", Name)
+		if Name != nil {
+			res.Name = *Name
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Name", Name)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
-		res.Type = Type
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Type", Type)
+		if Type != nil {
+			res.Type = *Type
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Type", Type)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
-		res.Icon = Icon
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Icon", Icon)
+		if Icon != nil {
+			res.Icon = *Icon
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Icon", Icon)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
-		res.Type_description = Type_description
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Type_description", Type_description)
+		if Type_description != nil {
+			res.Type_description = *Type_description
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Type_description", Type_description)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
 		results = append(results, res)
 	}

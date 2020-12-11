@@ -13,11 +13,13 @@ import (
 //
 // Built from:
 // main - VTechsDatastore.Db
-// CREATE TABLE available_certs (
-//    id INTEGER       PRIMARY KEY AUTOINCREMENT,
-//    cn VARCHAR (250) NOT NULL,
-//    dn TEXT          NOT NULL
-//)
+/*
+ CREATE TABLE available_certs (
+    id INTEGER       PRIMARY KEY AUTOINCREMENT,
+    cn VARCHAR (250) NOT NULL,
+    dn TEXT          NOT NULL
+)
+*/
 //
 
 // Table fields
@@ -63,7 +65,11 @@ func (handler *Available_certsHandler) SetPersistantStorage(persistant per.IPers
 // This function creates the database table for Available_cert
 func (handler *Available_certsHandler) CreateStructures() per.IQueryResult {
 	handler.Parent.LogDebug("CreateStructures", "Executing Query")
-	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS available_certs (id INTEGER PRIMARY KEY AUTOINCREMENT, cn VARCHAR (250) NOT NULL, dn TEXT NOT NULL )")
+	return handler.Executor.ExecuteQuery(`CREATE TABLE IF NOT EXISTS available_certs (
+    id INTEGER       PRIMARY KEY AUTOINCREMENT,
+    cn VARCHAR (250) NOT NULL,
+    dn TEXT          NOT NULL
+)`)
 }
 
 // End Istorage
@@ -107,11 +113,11 @@ func (handler *Available_certsHandler) ReadAll() SQLL.SQLLiteQueryResult {
 
 func (handler *Available_certsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 
-	var Id int64
+	var Id *int64
 
-	var Cn string
+	var Cn *string
 
-	var Dn string
+	var Dn *string
 
 	results := []per.IDataItem{} //Available_cert{}
 
@@ -121,14 +127,26 @@ func (handler *Available_certsHandler) ParseRows(rows *sql.Rows) per.IQueryResul
 
 		res := data.Available_cert{}
 
-		res.Id = Id
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
+		if Id != nil {
+			res.Id = *Id
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
-		res.Cn = Cn
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Cn", Cn)
+		if Cn != nil {
+			res.Cn = *Cn
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Cn", Cn)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
-		res.Dn = Dn
-		handler.Parent.LogDebugf("ParseRows", "Set '%v' for Dn", Dn)
+		if Dn != nil {
+			res.Dn = *Dn
+			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Dn", Dn)
+		} else {
+			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+		}
 
 		results = append(results, res)
 	}
