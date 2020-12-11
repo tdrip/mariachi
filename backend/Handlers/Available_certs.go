@@ -125,7 +125,7 @@ func (handler *Available_certsHandler) ParseRows(rows *sql.Rows) per.IQueryResul
 		err := rows.Scan(&Id, &Cn, &Dn)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
 		if err != nil {
-
+			handler.Parent.LogErrorEf("ParseRows", "Row Scan error: %s", err)
 		} else {
 			res := data.Available_cert{}
 

@@ -159,7 +159,7 @@ func (handler *TechnologiesHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 		err := rows.Scan(&Id, &Name, &Type, &Icon, &Type_description)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
 		if err != nil {
-
+			handler.Parent.LogErrorEf("ParseRows", "Row Scan error: %s", err)
 		} else {
 			res := data.Technologie{}
 

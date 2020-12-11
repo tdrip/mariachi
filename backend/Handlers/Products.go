@@ -137,7 +137,7 @@ func (handler *ProductsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 		err := rows.Scan(&Id, &Description, &Img)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
 		if err != nil {
-
+			handler.Parent.LogErrorEf("ParseRows", "Row Scan error: %s", err)
 		} else {
 			res := data.Product{}
 
