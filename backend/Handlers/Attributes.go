@@ -160,7 +160,7 @@ func (handler *AttributesHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 		err := rows.Scan(&Id, &Name, &Description, &Technologies_type, &Type)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
 		if err != nil {
-
+			handler.Parent.LogErrorEf("ParseRows", "Row Scan error: %s", err)
 		} else {
 			res := data.Attribute{}
 
