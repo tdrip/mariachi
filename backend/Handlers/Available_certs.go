@@ -122,33 +122,37 @@ func (handler *Available_certsHandler) ParseRows(rows *sql.Rows) per.IQueryResul
 	results := []per.IDataItem{} //Available_cert{}
 
 	for rows.Next() {
-		rows.Scan(&Id, &Cn, &Dn)
+		err := rows.Scan(&Id, &Cn, &Dn)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
+		if err != nil {
 
-		res := data.Available_cert{}
-
-		if Id != nil {
-			res.Id = *Id
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
 		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			res := data.Available_cert{}
+
+			if Id != nil {
+				res.Id = *Id
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", *Id)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Cn != nil {
+				res.Cn = *Cn
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Cn", *Cn)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Dn != nil {
+				res.Dn = *Dn
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Dn", *Dn)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			results = append(results, res)
 		}
 
-		if Cn != nil {
-			res.Cn = *Cn
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Cn", Cn)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Dn != nil {
-			res.Dn = *Dn
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Dn", Dn)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		results = append(results, res)
 	}
 	return SQLL.NewDataQueryResult(true, results)
 }

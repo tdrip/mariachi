@@ -134,33 +134,37 @@ func (handler *ProductsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	results := []per.IDataItem{} //Product{}
 
 	for rows.Next() {
-		rows.Scan(&Id, &Description, &Img)
+		err := rows.Scan(&Id, &Description, &Img)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
+		if err != nil {
 
-		res := data.Product{}
-
-		if Id != nil {
-			res.Id = *Id
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
 		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			res := data.Product{}
+
+			if Id != nil {
+				res.Id = *Id
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", *Id)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Description != nil {
+				res.Description = *Description
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Description", *Description)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Img != nil {
+				res.Img = *Img
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Img", *Img)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			results = append(results, res)
 		}
 
-		if Description != nil {
-			res.Description = *Description
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Description", Description)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Img != nil {
-			res.Img = *Img
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Img", Img)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		results = append(results, res)
 	}
 	return SQLL.NewDataQueryResult(true, results)
 }

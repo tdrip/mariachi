@@ -243,7 +243,9 @@ func (handler *ObjectsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	var Host *string
 
 	var Port *string
+
 	var IsSync *bool
+
 	var Technologies_type *string
 
 	var Technologies_name *string
@@ -265,117 +267,121 @@ func (handler *ObjectsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	results := []per.IDataItem{} //Object{}
 
 	for rows.Next() {
-		rows.Scan(&Id, &Name, &Keyvaultname, &Ip_address, &Host, &Port, &IsSync, &Technologies_type, &Technologies_name, &Comments, &Certificate_dns, &Ca_template, &Ca_common_name, &Tech, &Region, &Loadbalancer)
+		err := rows.Scan(&Id, &Name, &Keyvaultname, &Ip_address, &Host, &Port, &IsSync, &Technologies_type, &Technologies_name, &Comments, &Certificate_dns, &Ca_template, &Ca_common_name, &Tech, &Region, &Loadbalancer)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
+		if err != nil {
 
-		res := data.Object{}
-
-		if Id != nil {
-			res.Id = *Id
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
 		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			res := data.Object{}
+
+			if Id != nil {
+				res.Id = *Id
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", *Id)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Name != nil {
+				res.Name = *Name
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Name", *Name)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Keyvaultname != nil {
+				res.Keyvaultname = *Keyvaultname
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Keyvaultname", *Keyvaultname)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Ip_address != nil {
+				res.Ip_address = *Ip_address
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Ip_address", *Ip_address)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Host != nil {
+				res.Host = *Host
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Host", *Host)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Port != nil {
+				res.Port = *Port
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Port", *Port)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Technologies_type != nil {
+				res.Technologies_type = *Technologies_type
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Technologies_type", *Technologies_type)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Technologies_name != nil {
+				res.Technologies_name = *Technologies_name
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Technologies_name", *Technologies_name)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Comments != nil {
+				res.Comments = *Comments
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Comments", *Comments)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Certificate_dns != nil {
+				res.Certificate_dns = *Certificate_dns
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Certificate_dns", *Certificate_dns)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Ca_template != nil {
+				res.Ca_template = *Ca_template
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Ca_template", *Ca_template)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Ca_common_name != nil {
+				res.Ca_common_name = *Ca_common_name
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Ca_common_name", *Ca_common_name)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Tech != nil {
+				res.Tech = *Tech
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Tech", *Tech)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Region != nil {
+				res.Region = *Region
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Region", *Region)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Loadbalancer != nil {
+				res.Loadbalancer = *Loadbalancer
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Loadbalancer", *Loadbalancer)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			results = append(results, res)
 		}
 
-		if Name != nil {
-			res.Name = *Name
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Name", Name)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Keyvaultname != nil {
-			res.Keyvaultname = *Keyvaultname
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Keyvaultname", Keyvaultname)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Ip_address != nil {
-			res.Ip_address = *Ip_address
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Ip_address", Ip_address)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Host != nil {
-			res.Host = *Host
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Host", Host)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Port != nil {
-			res.Port = *Port
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Port", Port)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Technologies_type != nil {
-			res.Technologies_type = *Technologies_type
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Technologies_type", Technologies_type)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Technologies_name != nil {
-			res.Technologies_name = *Technologies_name
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Technologies_name", Technologies_name)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Comments != nil {
-			res.Comments = *Comments
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Comments", Comments)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Certificate_dns != nil {
-			res.Certificate_dns = *Certificate_dns
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Certificate_dns", Certificate_dns)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Ca_template != nil {
-			res.Ca_template = *Ca_template
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Ca_template", Ca_template)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Ca_common_name != nil {
-			res.Ca_common_name = *Ca_common_name
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Ca_common_name", Ca_common_name)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Tech != nil {
-			res.Tech = *Tech
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Tech", Tech)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Region != nil {
-			res.Region = *Region
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Region", Region)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Loadbalancer != nil {
-			res.Loadbalancer = *Loadbalancer
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Loadbalancer", Loadbalancer)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		results = append(results, res)
 	}
 	return SQLL.NewDataQueryResult(true, results)
 }

@@ -157,47 +157,51 @@ func (handler *AttributesHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	results := []per.IDataItem{} //Attribute{}
 
 	for rows.Next() {
-		rows.Scan(&Id, &Name, &Description, &Technologies_type, &Type)
+		err := rows.Scan(&Id, &Name, &Description, &Technologies_type, &Type)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
+		if err != nil {
 
-		res := data.Attribute{}
-
-		if Id != nil {
-			res.Id = *Id
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
 		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			res := data.Attribute{}
+
+			if Id != nil {
+				res.Id = *Id
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", *Id)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Name != nil {
+				res.Name = *Name
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Name", *Name)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Description != nil {
+				res.Description = *Description
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Description", *Description)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Technologies_type != nil {
+				res.Technologies_type = *Technologies_type
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Technologies_type", *Technologies_type)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Type != nil {
+				res.Type = *Type
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Type", *Type)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			results = append(results, res)
 		}
 
-		if Name != nil {
-			res.Name = *Name
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Name", Name)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Description != nil {
-			res.Description = *Description
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Description", Description)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Technologies_type != nil {
-			res.Technologies_type = *Technologies_type
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Technologies_type", Technologies_type)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Type != nil {
-			res.Type = *Type
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Type", Type)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		results = append(results, res)
 	}
 	return SQLL.NewDataQueryResult(true, results)
 }

@@ -128,33 +128,37 @@ func (handler *Ca_templatesHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	results := []per.IDataItem{} //Ca_template{}
 
 	for rows.Next() {
-		rows.Scan(&Id, &Description, &Dn)
+		err := rows.Scan(&Id, &Description, &Dn)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
+		if err != nil {
 
-		res := data.Ca_template{}
-
-		if Id != nil {
-			res.Id = *Id
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
 		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			res := data.Ca_template{}
+
+			if Id != nil {
+				res.Id = *Id
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", *Id)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Description != nil {
+				res.Description = *Description
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Description", *Description)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Dn != nil {
+				res.Dn = *Dn
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Dn", *Dn)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			results = append(results, res)
 		}
 
-		if Description != nil {
-			res.Description = *Description
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Description", Description)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Dn != nil {
-			res.Dn = *Dn
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Dn", Dn)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		results = append(results, res)
 	}
 	return SQLL.NewDataQueryResult(true, results)
 }

@@ -156,47 +156,51 @@ func (handler *TechnologiesHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	results := []per.IDataItem{} //Technologie{}
 
 	for rows.Next() {
-		rows.Scan(&Id, &Name, &Type, &Icon, &Type_description)
+		err := rows.Scan(&Id, &Name, &Type, &Icon, &Type_description)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
+		if err != nil {
 
-		res := data.Technologie{}
-
-		if Id != nil {
-			res.Id = *Id
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
 		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			res := data.Technologie{}
+
+			if Id != nil {
+				res.Id = *Id
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", *Id)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Name != nil {
+				res.Name = *Name
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Name", *Name)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Type != nil {
+				res.Type = *Type
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Type", *Type)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Icon != nil {
+				res.Icon = *Icon
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Icon", *Icon)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			if Type_description != nil {
+				res.Type_description = *Type_description
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Type_description", *Type_description)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
+			}
+
+			results = append(results, res)
 		}
 
-		if Name != nil {
-			res.Name = *Name
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Name", Name)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Type != nil {
-			res.Type = *Type
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Type", Type)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Icon != nil {
-			res.Icon = *Icon
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Icon", Icon)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		if Type_description != nil {
-			res.Type_description = *Type_description
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Type_description", Type_description)
-		} else {
-			handler.Parent.LogDebugf("ParseRows", "{.Name}} was NULL")
-		}
-
-		results = append(results, res)
 	}
 	return SQLL.NewDataQueryResult(true, results)
 }
