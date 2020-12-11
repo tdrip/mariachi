@@ -62,7 +62,7 @@ func (fds *VTechsDatastore) GetAttributesHandler() *hndlr.AttributesHandler {
 		res := data.(*hndlr.AttributesHandler)
 		return res
 	}
-	return nils
+	return nil
 }
 
 func (fds *VTechsDatastore) GetAvailable_certsHandler() *hndlr.Available_certsHandler {
