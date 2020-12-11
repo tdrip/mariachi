@@ -256,8 +256,12 @@ func (handler *ObjectsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 			res.Name = *Name
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Name", Name)
 
-			res.Keyvaultname = *Keyvaultname
-			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Keyvaultname", Keyvaultname)
+			if Keyvaultname != nil {
+				res.Keyvaultname = *Keyvaultname
+				handler.Parent.LogDebugf("ParseRows", "Set '%v' for Keyvaultname", Keyvaultname)
+			} else {
+				handler.Parent.LogDebugf("ParseRows", "Keyvaultname was NIL")
+			}
 
 			res.Ip_address = *Ip_address
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Ip_address", Ip_address)
