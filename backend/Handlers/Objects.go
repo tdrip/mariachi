@@ -210,89 +210,89 @@ func (handler *ObjectsHandler) ReadAll() SQLL.SQLLiteQueryResult {
 
 func (handler *ObjectsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 
-	var Id int64
+	var Id *int64
 
-	var Name string
+	var Name *string
 
-	var Keyvaultname string
+	var Keyvaultname *string
 
-	var Ip_address string
+	var Ip_address *string
 
-	var Host string
+	var Host *string
 
-	var Port string
+	var Port *string
 
-	var IsSync bool
+	var IsSync *bool
 
-	var Technologies_type string
+	var Technologies_type *string
 
-	var Technologies_name string
+	var Technologies_name *string
 
-	var Comments string
+	var Comments *string
 
-	var Certificate_dns string
+	var Certificate_dns *string
 
-	var Ca_template string
+	var Ca_template *string
 
-	var Ca_common_name string
+	var Ca_common_name *string
 
-	var Tech string
+	var Tech *string
 
-	var Region string
+	var Region *string
 
-	var Loadbalancer string
+	var Loadbalancer *string
 
 	results := []per.IDataItem{} //Object{}
 
 	for rows.Next() {
-		err := rows.Scan(&Id, &Name, &Keyvaultname, &Ip_address, &Host, &Port, &IsSync, &Technologies_type, &Technologies_name, &Comments, &Certificate_dns, &Ca_template, &Ca_common_name, &Tech, &Region, &Loadbalancer)
+		err := rows.Scan(Id, Name, Keyvaultname, &Ip_address, &Host, &Port, &IsSync, &Technologies_type, &Technologies_name, &Comments, &Certificate_dns, &Ca_template, &Ca_common_name, &Tech, &Region, &Loadbalancer)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
 		if err == nil {
 			res := data.Object{}
 
-			res.Id = Id
+			res.Id = *Id
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Id", Id)
 
-			res.Name = Name
+			res.Name = *Name
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Name", Name)
 
-			res.Keyvaultname = Keyvaultname
+			res.Keyvaultname = *Keyvaultname
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Keyvaultname", Keyvaultname)
 
-			res.Ip_address = Ip_address
+			res.Ip_address = *Ip_address
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Ip_address", Ip_address)
 
-			res.Host = Host
+			res.Host = *Host
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Host", Host)
 
-			res.Port = Port
+			res.Port = *Port
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Port", Port)
 
-			res.Technologies_type = Technologies_type
+			res.Technologies_type = *Technologies_type
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Technologies_type", Technologies_type)
 
-			res.Technologies_name = Technologies_name
+			res.Technologies_name = *Technologies_name
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Technologies_name", Technologies_name)
 
-			res.Comments = Comments
+			res.Comments = *Comments
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Comments", Comments)
 
-			res.Certificate_dns = Certificate_dns
+			res.Certificate_dns = *Certificate_dns
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Certificate_dns", Certificate_dns)
 
-			res.Ca_template = Ca_template
+			res.Ca_template = *Ca_template
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Ca_template", Ca_template)
 
-			res.Ca_common_name = Ca_common_name
+			res.Ca_common_name = *Ca_common_name
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Ca_common_name", Ca_common_name)
 
-			res.Tech = Tech
+			res.Tech = *Tech
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Tech", Tech)
 
-			res.Region = Region
+			res.Region = *Region
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Region", Region)
 
-			res.Loadbalancer = Loadbalancer
+			res.Loadbalancer = *Loadbalancer
 			handler.Parent.LogDebugf("ParseRows", "Set '%v' for Loadbalancer", Loadbalancer)
 
 			results = append(results, res)
