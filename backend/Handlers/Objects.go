@@ -245,7 +245,7 @@ func (handler *ObjectsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	results := []per.IDataItem{} //Object{}
 
 	for rows.Next() {
-		err := rows.Scan(Id, Name, Keyvaultname, &Ip_address, &Host, &Port, &IsSync, &Technologies_type, &Technologies_name, &Comments, &Certificate_dns, &Ca_template, &Ca_common_name, &Tech, &Region, &Loadbalancer)
+		err := rows.Scan(&Id, &Name, &Keyvaultname, &Ip_address, &Host, &Port, &IsSync, &Technologies_type, &Technologies_name, &Comments, &Certificate_dns, &Ca_template, &Ca_common_name, &Tech, &Region, &Loadbalancer)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
 		if err == nil {
 			res := data.Object{}
