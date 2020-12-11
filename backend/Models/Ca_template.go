@@ -9,7 +9,7 @@ import (
 
 //
 // Built from:
-// main - VenafiTechs.Db
+// main - VTechsDatastore.Db
 /*
  CREATE TABLE ca_templates (
     id          INTEGER      PRIMARY KEY AUTOINCREMENT,

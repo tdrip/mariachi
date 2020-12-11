@@ -9,7 +9,7 @@ import (
 
 //
 // Built from:
-// main - VenafiTechs.Db
+// main - VTechsDatastores.Db
 /*
  CREATE TABLE technologies (
     id               INTEGER      NOT NULL,
