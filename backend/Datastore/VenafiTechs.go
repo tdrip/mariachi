@@ -1,7 +1,7 @@
 package pgudatastore
 
 import (
-	hndlr "github.com/tdrip/backend/Handlers"
+	hndlr "github.com/tdrip/mariachi/backend/Handlers"
 
 	SQLL "github.com/tdrip/persist/pkg/sqllite"
 )
